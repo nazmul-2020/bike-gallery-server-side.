@@ -28,15 +28,15 @@ async function run() {
             res.send(item);
         })
 
-        app.get('/item/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const item = await itemsCollection.findOne(query);
-            res.send(item);
-        })
-
-
         
+
+
+        // POST 
+        app.post('/item', async (req, res) => {
+            const newItem = req.body;
+            const result = await itemsCollection.insertOne(newItem);
+            res.send(result);
+        })
 
          // delete 
          app.delete('/item/:id', async (req, res) => {
