@@ -19,8 +19,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
+        await client.connect();
+        const itemsCollection = client.db("bike-gallery").collection("item");
         
+        //get item 
+        app.get('/item', async (req, res) => {
+            const query = {};
+            const cursor = itemsCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items);
+        })
+
     }
+
     finally {
 
     }
@@ -28,7 +39,9 @@ async function run() {
 console.log('mongo connect');
 run().catch(console.dir)
 
-
+app.get('/', (req, res) => {
+    res.send('welCome To Bike Gallery')
+})
 
 
 app.listen(port, () => {
