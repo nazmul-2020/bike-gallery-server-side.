@@ -59,7 +59,7 @@ async function run() {
             const updatedDoc = {
                 $set: req.body,
             };
-            const result =  foodCollection.updateOne(filter,updatedDoc,options);
+            const result = await itemsCollection.updateOne(filter,updatedDoc,options);
             res.send(result);
         });
 
