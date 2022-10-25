@@ -36,7 +36,7 @@ async function run() {
         })
 
 
-        // POST 
+        // POST item
         app.post('/item', async (req, res) => {
             const newItem = req.body;
             const result = await itemsCollection.insertOne(newItem);
@@ -44,11 +44,22 @@ async function run() {
         })
 
 
-         // delete 
-         app.delete('/item/:id', async (req, res) => {
+        // delete item
+        app.delete('/item/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await itemsCollection.deleteOne(query);
+            res.send(result);
+        });
+
+        // update quantity
+        app.put("/item/:id", async (req, res) => {
+            const filter = { _id: ObjectId(req.params.id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: req.body,
+            };
+            const result =  foodCollection.updateOne(filter,updatedDoc,options);
             res.send(result);
         });
 
@@ -57,7 +68,7 @@ async function run() {
     finally {
 
     }
-    
+
 }
 console.log('mongo connect');
 run().catch(console.dir)
