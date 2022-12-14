@@ -52,6 +52,7 @@ async function run() {
             res.send(result);
         });
 
+
         // update quantity
         app.put("/item/:id", async (req, res) => {
             const filter = { _id: ObjectId(req.params.id) };
@@ -59,9 +60,35 @@ async function run() {
             const updatedDoc = {
                 $set: req.body,
             };
-            const result = await itemsCollection.updateOne(filter,updatedDoc,options);
+            const result = await itemsCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
+
+
+        // app.get('/myItem', async(req, res)=> {
+        //     const decodedEmail = req.decoded.email;
+        //     const email = req.query.email;
+        //     // console.log(email);
+        //     if(email === decodedEmail){
+        //       const query = {email: email};
+        //       const cursor = itemsCollection.find(query);
+        //       const items = await cursor.toArray();
+        //       res.send(items)
+        //     }
+        //     else{
+        //       res.status(403).send({message: 'Forbidden access'})
+        //     }
+        //   })
+
+        app.get('/myItem', async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = { email: email };
+            // const query = {};
+            const cursor = itemsCollection.find(query);
+            const item = await cursor.toArray();
+            res.send(item);
+        })
 
     }
 
